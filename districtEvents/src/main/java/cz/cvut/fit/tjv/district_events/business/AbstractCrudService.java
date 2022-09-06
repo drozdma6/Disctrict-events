@@ -51,7 +51,11 @@ public abstract class AbstractCrudService<E, K> {
             throw new EntityStateException(entity);
     }
 
-    public void deleteById(K id) {
-        repository.deleteById(id);
+    public void deleteById(K id) throws EntityNotFoundException {
+        if(repository.existsById(id)){
+            repository.deleteById(id);
+        } else{
+            throw new EntityNotFoundException(id);
+        }
     }
 }

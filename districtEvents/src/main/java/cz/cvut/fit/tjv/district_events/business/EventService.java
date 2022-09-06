@@ -39,12 +39,12 @@ public class EventService extends AbstractCrudService<Event, Long> {
      * @throws AccessDeniedException In case the caller is not the author of the event being deleted.
      */
     @SuppressWarnings("unused")
-    public void deleteById(Long id, User actedUpon) {
+    public void deleteById(Long id, User actedUpon){
         Optional<Event> optionalEvent = readById(id);
         if (optionalEvent.isEmpty())
             return;
         if (optionalEvent.get().getAuthor().equals(actedUpon))
-            super.deleteById(id);
+            this.repository.deleteById(id);
         else
             throw new AccessDeniedException("Only author can delete their event");
     }
