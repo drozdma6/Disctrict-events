@@ -4,8 +4,10 @@ import cz.cvut.fit.tjv.district_events.dao.VillageJpaRepository;
 import cz.cvut.fit.tjv.district_events.domain.Village;
 import org.springframework.stereotype.Component;
 
+import java.util.Set;
+
 @Component
-public class VillageService extends AbstractCrudService<Village, Long>{
+public class VillageService extends AbstractCrudService<Village, Long, VillageJpaRepository> {
 
     public VillageService(VillageJpaRepository repository) {
         super(repository);
@@ -14,5 +16,9 @@ public class VillageService extends AbstractCrudService<Village, Long>{
     @Override
     public boolean exists(Village entity) {
         return repository.existsById(entity.getId());
+    }
+
+    public boolean exists(Set<Village> villages) {
+        return villages.stream().allMatch(village -> repository.existsById(village.getId()));
     }
 }

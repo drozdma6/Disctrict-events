@@ -2,6 +2,7 @@ package cz.cvut.fit.tjv.district_events.business;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
+import javax.transaction.Transactional;
 import java.util.Collection;
 import java.util.Optional;
 
@@ -11,16 +12,17 @@ import java.util.Optional;
  * @param <E> Type of entity
  * @param <K> Type of (primary) key.
  */
-public abstract class AbstractCrudService<E, K> {
+public abstract class AbstractCrudService<E, K, R extends JpaRepository<E, K>> {
     /**
      * Reference to data (persistence) layer.
      */
-    protected final JpaRepository<E, K> repository;
+    protected final R repository;
 
-    protected AbstractCrudService(JpaRepository<E, K> repository) {
+    protected AbstractCrudService(R repository) {
         this.repository = repository;
     }
 
+    @Transactional
     public void create(E entity) throws EntityStateException {
         if (exists(entity)) {
             throw new EntityStateException(entity);
@@ -44,6 +46,7 @@ public abstract class AbstractCrudService<E, K> {
      * @param entity the new state of the entity to be updated; the instance must contain a key value
      * @throws EntityStateException if the entity cannot be found
      */
+    @Transactional
     public void update(E entity) throws EntityStateException {
         if (exists(entity))
             repository.save(entity);

@@ -5,7 +5,7 @@ import cz.cvut.fit.tjv.district_events.domain.User;
 import org.springframework.stereotype.Component;
 
 @Component
-public class UserService extends AbstractCrudService<User, Long>{
+public class UserService extends AbstractCrudService<User, Long, UserJpaRepository> {
 
     protected UserService(UserJpaRepository repository) {
         super(repository);
