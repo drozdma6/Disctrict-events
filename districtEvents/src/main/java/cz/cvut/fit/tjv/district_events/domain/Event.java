@@ -1,16 +1,19 @@
 package cz.cvut.fit.tjv.district_events.domain;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
 @Entity
-public class Event {
+public class Event{
     @Id
     private Long id;
     @Column(nullable = false)
     private String name;
+    @Column(nullable = false)
+    private LocalDateTime dateTime;
     private String description;
     @ManyToOne
     @JoinColumn(name = "author_user_id", nullable = false)
@@ -18,40 +21,49 @@ public class Event {
     @ManyToMany
     private Set<Village> locations = new HashSet<>();
 
-
-    public Event() {
+    public Event(){
     }
 
-    public String getDescription() {
-        return description;
-    }
-
-    public Event(Long id, String name, String description, User author, Set<Village> locations) {
+    public Event(Long id, String name, LocalDateTime dateTime, String description, User author,
+                 Set<Village> locations){
         this.id = id;
         this.name = name;
+        this.dateTime = dateTime;
         this.description = description;
         this.author = author;
         this.locations = locations;
     }
 
-    public Long getId() {
+    public LocalDateTime getDateTime(){
+        return dateTime;
+    }
+
+    public void setDateTime(LocalDateTime dateTime){
+        this.dateTime = dateTime;
+    }
+
+    public String getDescription(){
+        return description;
+    }
+
+    public Long getId(){
         return id;
     }
 
-    public String getName() {
+    public String getName(){
         return name;
     }
 
-    public User getAuthor() {
+    public User getAuthor(){
         return author;
     }
 
-    public Set<Village> getLocations() {
+    public Set<Village> getLocations(){
         return locations;
     }
 
     @Override
-    public boolean equals(Object o) {
+    public boolean equals(Object o){
         if (this == o)
             return true;
         if (o == null || getClass() != o.getClass())
@@ -61,13 +73,13 @@ public class Event {
     }
 
     @Override
-    public int hashCode() {
+    public int hashCode(){
         return Objects.hash(id);
     }
 
-    private String villagesToString() {
+    private String villagesToString(){
         StringBuilder res = new StringBuilder();
-        for (Village village : locations) {
+        for (Village village : locations){
             res.append(village.toString());
         }
         return res.toString();
@@ -75,7 +87,9 @@ public class Event {
 
 
     @Override
-    public String toString() {
-        return "Event{" + "id='" + id.toString() + '\'' + "name='" + name + '\'' + "author='" + author.toString() + '\'' + "description='" + description + '\'' + "location='" + villagesToString() + '\'' + '}';
+    public String toString(){
+        return "Event{" + "id='" + id.toString() + '\'' + "name='" + name + '\'' + "author='" +
+               author.toString() + '\'' + "description='" + description + '\'' + "location='" +
+               villagesToString() + '\'' + '}';
     }
 }
