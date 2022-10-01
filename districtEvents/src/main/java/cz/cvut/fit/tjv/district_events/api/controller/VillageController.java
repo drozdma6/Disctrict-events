@@ -25,16 +25,16 @@ public class VillageController {
 
     @PostMapping("/villages")
     VillageDto newVillage(@RequestBody VillageDto villageDto){
-        Village village = VillageConverter.fromDto(villageDto);
-        try{
-            this.villageService.create(village);
-        } catch (EntityStateException e){
-            throw new ResponseStatusException(
-                    HttpStatus.CONFLICT, "Duplicate id"
-            );
+        if (villageDto.getName() == null) {
+            throw new ResponseStatusException(HttpStatus.NO_CONTENT, "Name is null");
         }
-        village = this.villageService.readById(village.getId()).orElseThrow(
-                () -> new ResponseStatusException(
+        Village village = VillageConverter.fromDto(villageDto);
+        try {
+            this.villageService.create(village);
+        } catch (EntityStateException e) {
+            throw new ResponseStatusException(HttpStatus.CONFLICT, "Duplicate id");
+        }
+        village = this.villageService.readById(village.getId()).orElseThrow(() -> new ResponseStatusException(
                         HttpStatus.NOT_FOUND, "Village Not Found")
         );
         return VillageConverter.toDto(village);
