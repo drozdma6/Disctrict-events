@@ -1,5 +1,6 @@
 package cz.cvut.fit.tjv.district_events.domain;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import java.util.Objects;
@@ -8,6 +9,7 @@ import java.util.Objects;
 public class User {
     @Id
     private Long id;
+    @Column(nullable = false)
     private String name;
 
     public User() {
