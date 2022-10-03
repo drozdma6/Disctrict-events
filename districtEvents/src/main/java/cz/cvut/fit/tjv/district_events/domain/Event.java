@@ -1,5 +1,8 @@
 package cz.cvut.fit.tjv.district_events.domain;
 
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
+
 import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.HashSet;
@@ -14,11 +17,18 @@ public class Event{
     private String name;
     @Column(nullable = false)
     private LocalDateTime dateTime;
+    @Column
     private String description;
     @ManyToOne
-    @JoinColumn(name = "author_user_id", nullable = false)
+    @JoinColumn(name = "author_id", nullable = false)
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private User author;
     @ManyToMany
+    @JoinTable(name = "event_village_locations", // name of associative table - table created as decomposed M:N relation
+            joinColumns = @JoinColumn(name = "event_id"), // column name referring to this entity - will become both primary and foreign key
+            inverseJoinColumns = @JoinColumn(name = "village_id") // column name referring to the other entity - will become both primary and foreign key
+    )
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private Set<Village> locations = new HashSet<>();
 
     public Event(){
