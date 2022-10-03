@@ -7,18 +7,19 @@ import org.springframework.stereotype.Component;
 import java.util.Optional;
 
 @Component
-public class EventService extends AbstractCrudService<Event, Long, EventJpaRepository> {
+public class EventService extends AbstractCrudService<Event, Long, EventJpaRepository>{
     private final UserService userService;
     private final VillageService villageService;
 
-    public EventService(EventJpaRepository repository, UserService userService, VillageService villageService) {
+    public EventService(EventJpaRepository repository, UserService userService,
+                        VillageService villageService){
         super(repository);
         this.userService = userService;
         this.villageService = villageService;
     }
 
     @Override
-    public boolean exists(Event entity) {
+    public boolean exists(Event entity){
         return repository.existsById(entity.getId());
     }
 
@@ -29,7 +30,7 @@ public class EventService extends AbstractCrudService<Event, Long, EventJpaRepos
      * @throws UnsupportedOperationException always
      */
     @Override
-    public void deleteById(Long id) {
+    public void deleteById(Long id){
         throw new UnsupportedOperationException();
     }
 
@@ -41,21 +42,21 @@ public class EventService extends AbstractCrudService<Event, Long, EventJpaRepos
      * @throws AccessDeniedException In case the caller is not the author of the event being deleted.
      */
     @SuppressWarnings("unused")
-    public void deleteById(Long id, Long actedUponId) {
+    public void deleteById(Long id, Long actedUponId){
         Optional<Event> optionalEvent = readById(id);
         if (optionalEvent.isEmpty())
             return;
-        if (optionalEvent.get().getAuthor().getId().equals(actedUponId))
+        if (optionalEvent.get().getAuthor().getId().equals(actedUponId)){
             this.repository.deleteById(id);
-        else
+        } else
             throw new AccessDeniedException("Only author can delete their event");
-
     }
 
     @Override
-    public void create(Event entity) throws EntityStateException {
-        if (entity.getAuthor() == null || exists(entity) || !userService.exists(
-                entity.getAuthor()) || !villageService.exists(entity.getLocations())) {
+    public void create(Event entity) throws EntityStateException{
+        if (entity.getAuthor() == null || exists(entity) ||
+            !userService.exists(entity.getAuthor()) ||
+            !villageService.exists(entity.getLocations())){
             throw new EntityStateException(entity);
         }
         repository.save(entity);

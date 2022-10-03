@@ -5,14 +5,14 @@ import cz.cvut.fit.tjv.district_events.domain.User;
 import org.springframework.stereotype.Component;
 
 @Component
-public class UserService extends AbstractCrudService<User, Long, UserJpaRepository> {
+public class UserService extends AbstractCrudService<User, Long, UserJpaRepository>{
 
-    protected UserService(UserJpaRepository repository) {
+    protected UserService(UserJpaRepository repository){
         super(repository);
     }
 
     @Override
-    public boolean exists(User entity) {
+    public boolean exists(User entity){
         return repository.existsById(entity.getId());
     }
 }
