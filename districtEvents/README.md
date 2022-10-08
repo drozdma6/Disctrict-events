@@ -3,13 +3,14 @@
 - Website for sharing upcoming events.
 
 ## Complex server query
-
-- Select all non cancelled events matching given author and date.
+- Select all events that match given name, village and date (ignore empty items).
+- Select all events created by user.
 
 ## Client business operation
 
-- Select all non cancelled events created by signed user in given date using server query
-  and then update all (one by one) outside events to state canceled. (because of bad weather)
+- Delete all canceled events created by signed user.
+  - Get all user's events. (provided by server),
+  - Go through them one by one and delete them if they are marked as canceled.
 
 ## Data model
 
