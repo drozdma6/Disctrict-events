@@ -5,6 +5,7 @@ import cz.cvut.fit.tjv.district_events.business.EntityNotFoundException;
 import cz.cvut.fit.tjv.district_events.business.EntityStateException;
 import cz.cvut.fit.tjv.district_events.business.VillageService;
 import cz.cvut.fit.tjv.district_events.domain.Village;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
@@ -60,8 +61,12 @@ public class VillageController {
         try{
             villageService.deleteById(id);
             throw new ResponseStatusException(HttpStatus.NO_CONTENT, "Village has been deleted");
-        }catch (EntityNotFoundException e) {
+        } catch (EntityNotFoundException e){
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Village was not found");
+        } catch (
+                DataIntegrityViolationException e){ //unable delete village if some event is organized there
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
+                                              "Events are organized in village");
         }
     }
 }
