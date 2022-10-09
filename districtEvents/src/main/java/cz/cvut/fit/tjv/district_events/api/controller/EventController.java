@@ -48,14 +48,20 @@ public class EventController {
         try {
             this.eventService.update(event);
         } catch (EntityStateException exception) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Event ID is not unique", exception);
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Event ID is not unique",
+                                              exception);
         }
         return eventDto;
     }
 
     @DeleteMapping("events/{id}/{userId}")
-    void deleteVillage(@PathVariable Long id, @PathVariable Long userId) {
+    void deleteVillage(@PathVariable Long id, @PathVariable Long userId){
         eventService.deleteById(id, userId);
         throw new ResponseStatusException(HttpStatus.NO_CONTENT, "Event has been deleted");
+    }
+
+    @GetMapping("events/author/{id}")
+    Collection<EventDto> getEventsCreatedByAuthor(@PathVariable Long id){
+        return EventConverter.toDtoMany(eventService.getEventsCreatedByAuthor(id));
     }
 }

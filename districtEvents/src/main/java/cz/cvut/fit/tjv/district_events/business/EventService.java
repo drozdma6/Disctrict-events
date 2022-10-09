@@ -4,6 +4,7 @@ import cz.cvut.fit.tjv.district_events.dao.EventJpaRepository;
 import cz.cvut.fit.tjv.district_events.domain.Event;
 import org.springframework.stereotype.Component;
 
+import java.util.Collection;
 import java.util.Optional;
 
 @Component
@@ -60,5 +61,9 @@ public class EventService extends AbstractCrudService<Event, Long, EventJpaRepos
             throw new EntityStateException(entity);
         }
         repository.save(entity);
+    }
+
+    public Collection<Event> getEventsCreatedByAuthor(Long author_id){
+        return repository.findAllByAuthor_Id(author_id);
     }
 }
