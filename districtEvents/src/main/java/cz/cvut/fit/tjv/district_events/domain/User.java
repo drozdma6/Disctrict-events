@@ -5,11 +5,12 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import java.util.Objects;
 
-@Entity
+@Entity(name = "User_entity")
 public class User {
     @Id
+    @Column(name = "user_id")
     private Long id;
-    @Column(nullable = false)
+    @Column(name = "user_name", nullable = false)
     private String name;
 
     public User() {
