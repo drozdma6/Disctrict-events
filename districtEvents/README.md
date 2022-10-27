@@ -1,8 +1,18 @@
 # District events
 
-- Website for sharing upcoming events.
+- Backend (Rest api) for web application used for sharing upcoming events in local district.
+
+## Technologies
+
+- Java
+- Spring-boot
+- Spring-data
+- Spring-security
+- Hibernate
+- H2 database
 
 ## Complex server query
+
 - Select all events that are organized in some village (from list of villages) and match given date.
 - Select all events created by user.
 
@@ -17,6 +27,5 @@
 ![Data Model](dataModel.png)
 
 ## Frontend
-
 - [Figma](https://www.figma.com/file/0NcVXePiftwx3kBkyfE1IS/District-Events?node-id=0%3A1)
 
